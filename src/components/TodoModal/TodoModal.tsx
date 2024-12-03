@@ -1,14 +1,21 @@
-import { createTodo } from '../../utils'
+import { createTodo, updateTodo } from '../../utils'
 import { Modal, Box, TextField, Button } from '@mui/material'
 import { useState } from 'react'
+import { Schema } from '../../../amplify/data/resource'
 
-interface NewTodoModalProps {
+interface TodoModalProps {
   onClose: () => void
+  action: 'create' | 'update'
+  todo?: Schema['Todo']['type']
 }
 
-const NewTodoModal = ({ onClose }: NewTodoModalProps) => {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+const TodoModal = ({ onClose, action, todo }: TodoModalProps) => {
+  const [title, setTitle] = useState(
+    action === 'update' && todo ? todo.title : '',
+  )
+  const [content, setContent] = useState(
+    action === 'update' && todo ? todo.content : '',
+  )
 
   return (
     <Modal
@@ -54,7 +61,13 @@ const NewTodoModal = ({ onClose }: NewTodoModalProps) => {
             variant="contained"
             color="primary"
             onClick={() => {
-              createTodo({ title, content })
+              if (title && content) {
+                if (action === 'create') {
+                  createTodo({ title, content })
+                } else {
+                  todo && updateTodo({ id: todo.id, title, content })
+                }
+              }
               onClose()
             }}
             disabled={!title || !content}
@@ -67,4 +80,4 @@ const NewTodoModal = ({ onClose }: NewTodoModalProps) => {
   )
 }
 
-export default NewTodoModal
+export default TodoModal

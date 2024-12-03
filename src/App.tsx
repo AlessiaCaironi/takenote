@@ -5,7 +5,7 @@ import { generateClient } from 'aws-amplify/data'
 import Header from './components/Header/Header'
 import Dashboard from './components/Dashboard/Dashboard'
 import FloatingButton from './components/FloatingButton/FloatingButton'
-import NewTodoModal from './components/NewTodoModal/NewTodoModal'
+import TodoModal from './components/TodoModal/TodoModal'
 
 const client = generateClient<Schema>()
 
@@ -25,7 +25,7 @@ const App = () => {
       <Dashboard todos={todos} />
       <FloatingButton onClick={() => setShowNewTodoModal(true)} />
       {showNewTodoModal && (
-        <NewTodoModal onClose={() => setShowNewTodoModal(false)} />
+        <TodoModal onClose={() => setShowNewTodoModal(false)} action="create" />
       )}
     </>
   )

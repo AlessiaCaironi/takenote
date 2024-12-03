@@ -7,11 +7,24 @@ export function deleteTodo(id: string): void {
   client.models.Todo.delete({ id })
 }
 
-interface createTodoInterface {
+export function createTodo({
+  title,
+  content,
+}: {
   title: string
   content: string
+}): void {
+  client.models.Todo.create({ content: content, title: title })
 }
 
-export function createTodo({ title, content }: createTodoInterface): void {
-  client.models.Todo.create({ content: content, title: title })
+export function updateTodo({
+  id,
+  title,
+  content,
+}: {
+  id: string
+  title: string
+  content: string
+}): void {
+  client.models.Todo.update({ id, content, title })
 }
