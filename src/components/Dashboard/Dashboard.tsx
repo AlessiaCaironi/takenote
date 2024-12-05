@@ -4,9 +4,10 @@ import { Grid2 } from '@mui/material'
 
 interface DashboardProps {
   todos: Array<Schema['Todo']['type']>
+  refreshTodos: () => void
 }
 
-const Dashboard = ({ todos }: DashboardProps) => {
+const Dashboard = ({ todos, refreshTodos }: DashboardProps) => {
   return (
     <>
       <Grid2
@@ -18,7 +19,7 @@ const Dashboard = ({ todos }: DashboardProps) => {
       >
         {todos.map((todo) => (
           <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={todo.id}>
-            <TodoCard key={todo.id} todo={todo} />
+            <TodoCard key={todo.id} todo={todo} refreshTodos={refreshTodos} />
           </Grid2>
         ))}
       </Grid2>

@@ -1,21 +1,41 @@
-import { createTodo, updateTodo } from '../../utils'
-import { Modal, Box, TextField, Button } from '@mui/material'
 import { useState } from 'react'
+import { createTodo, updateTodo } from '../../utils/utils.todo'
+import { Modal, Box, TextField, Button } from '@mui/material'
 import { Schema } from '../../../amplify/data/resource'
 
 interface TodoModalProps {
   onClose: () => void
   action: 'create' | 'update'
   todo?: Schema['Todo']['type']
+  refreshTodos?: () => void
 }
 
-const TodoModal = ({ onClose, action, todo }: TodoModalProps) => {
-  const [title, setTitle] = useState(
-    action === 'update' && todo ? todo.title : '',
+const TodoModal = ({ onClose, action, todo, refreshTodos }: TodoModalProps) => {
+  const [title, setTitle] = useState<string>(
+    action === 'update' && todo && todo.title ? todo.title : '',
   )
-  const [content, setContent] = useState(
-    action === 'update' && todo ? todo.content : '',
+  const [content, setContent] = useState<string>(
+    action === 'update' && todo && todo.content ? todo.content : '',
   )
+  const [image, setImage] = useState<File | undefined>()
+
+  const handleSave = async () => {
+    if (title && content) {
+      try {
+        if (action === 'create') {
+          await createTodo({ title, content, imageFile: image })
+        } else if (action === 'update' && todo) {
+          await updateTodo({ id: todo.id, title, content }).then(() => {
+            refreshTodos && refreshTodos()
+          })
+        }
+
+        onClose()
+      } catch (error) {
+        console.error('Error saving todo:', error)
+      }
+    }
+  }
 
   return (
     <Modal
@@ -53,6 +73,21 @@ const TodoModal = ({ onClose, action, todo }: TodoModalProps) => {
           multiline
           rows={4}
         />
+        <Button variant="contained" component="label" sx={{ mt: 2 }}>
+          Upload Image
+          <input
+            hidden
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                setImage(file)
+              }
+            }}
+          />
+        </Button>
+
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
           <Button onClick={onClose} sx={{ mr: 2 }}>
             Cancel
@@ -61,14 +96,7 @@ const TodoModal = ({ onClose, action, todo }: TodoModalProps) => {
             variant="contained"
             color="primary"
             onClick={() => {
-              if (title && content) {
-                if (action === 'create') {
-                  createTodo({ title, content })
-                } else {
-                  todo && updateTodo({ id: todo.id, title, content })
-                }
-              }
-              onClose()
+              handleSave()
             }}
             disabled={!title || !content}
           >
