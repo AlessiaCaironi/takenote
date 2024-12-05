@@ -20,7 +20,7 @@ const Header = () => {
             letterSpacing: '0.1em',
           }}
         >
-          Ricordella
+          Take Note
         </Typography>
 
         <IconButton onClick={signOut} color="inherit">
