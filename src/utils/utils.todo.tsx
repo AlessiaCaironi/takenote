@@ -58,13 +58,25 @@ export async function updateTodo({
   id,
   title,
   content,
+  imageFile,
 }: {
   id: string
   title: string
   content: string
+  imageFile?: File
 }): Promise<void> {
   try {
-    await client.models.Todo.update({ id, title, content })
+    const todo = (await client.models.Todo.get({ id })).data
+    if (todo?.image) {
+      await deleteImage(todo?.image)
+    }
+
+    let imageUrl: string | undefined
+    if (imageFile) {
+      imageUrl = await uploadImage(imageFile)
+    }
+
+    await client.models.Todo.update({ id, title, content, image: imageUrl })
   } catch (error) {
     console.error('Error updating todo:', error)
     throw error

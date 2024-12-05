@@ -25,7 +25,12 @@ const TodoModal = ({ onClose, action, todo, refreshTodos }: TodoModalProps) => {
         if (action === 'create') {
           await createTodo({ title, content, imageFile: image })
         } else if (action === 'update' && todo) {
-          await updateTodo({ id: todo.id, title, content }).then(() => {
+          await updateTodo({
+            id: todo.id,
+            title,
+            content,
+            imageFile: image,
+          }).then(() => {
             refreshTodos && refreshTodos()
           })
         }
