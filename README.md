@@ -6,4 +6,5 @@ This project was generated starting from the [Amplify Vite React template](https
 ## Technologies used
 
 Frontend: React, Typescript, Material-UI
+
 Backend: AWS Amplify
