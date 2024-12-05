@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-takenote-dev-725b6-authRole",
+      "UnauthRoleArn": "arn:aws:iam::577638373574:role/amplify-takenote-dev-725b6-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::577638373574:role/amplify-takenote-dev-725b6-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-takenote-dev-725b6-deployment",
+      "UnauthRoleName": "amplify-takenote-dev-725b6-unauthRole",
+      "StackName": "amplify-takenote-dev-725b6",
+      "StackId": "arn:aws:cloudformation:eu-north-1:577638373574:stack/amplify-takenote-dev-725b6/a86e0580-b346-11ef-9ef5-0ecaa85bcbb7",
+      "AmplifyAppId": "d2p9i7p49mzooy"
+    },
+    "categories": {
+      "function": {
+        "getTodos": {}
+      }
+    }
+  }
+}
